@@ -71,32 +71,4 @@ public class ObjectManager : MonoBehaviour
         }
         return count;
     }
-
-    public GameObject GetObjetoPorTipo(string objetoTipo)
-    {
-        if (System.Enum.TryParse(objetoTipo, out Objetos.ObjetosEquipo equipo))
-        {
-            if (objetosEquipoMap.TryGetValue(equipo, out List<Objetos> objetos) && objetos.Count > 0)
-            {
-                return objetos[0].gameObject; 
-            }
-        }
-        return null;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            UsarObjeto(Objetos.ObjetosEquipo.gato);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            UsarObjeto(Objetos.ObjetosEquipo.fiera);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            UsarObjeto(Objetos.ObjetosEquipo.conejo);
-        }
-    }
 }

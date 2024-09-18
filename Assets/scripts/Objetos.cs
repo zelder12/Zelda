@@ -31,16 +31,16 @@ public class Objetos : MonoBehaviour
         switch (objetosEquipo)
         {
             case ObjetosEquipo.gato:
-                playerMovement.RegenerarCorazon();
+                playerMovement.Curar(1, false); // Cura 1 punto de vida
                 break;
             case ObjetosEquipo.fiera:
-                playerMovement.AumentarVida(2);
+                playerMovement.Curar(3, true); // Cura completamente
                 break;
             case ObjetosEquipo.conejo:
-                playerMovement.AumentarVelocidad(1); 
+                playerMovement.AumentarVelocidad(1); // Aumenta la velocidad
                 break;
         }
 
-        Destroy(this.gameObject);
+        Destroy(gameObject); // Destruye el objeto después de usarlo
     }
 }

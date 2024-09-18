@@ -14,11 +14,16 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private SpriteRenderer spritePersonaje;
     private AudioSource audioSource;
+    private Collider2D playerCollider;
     private int vidaPersonaje = 3;
+    private int golpesRecibidos = 0;
 
     private float velocidadActual;
     private bool velocidadIncrementada = false;
     private float velocidadRápidaOriginal;
+    private bool invulnerable = false;
+    private bool parpadeando = false;
+    private bool estaMuerto = false;
 
     private void Awake()
     {
@@ -26,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         spritePersonaje = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
+        playerCollider = GetComponent<Collider2D>();
 
         if (audioSource == null)
         {
@@ -37,6 +43,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (estaMuerto) return;
+
         if (Input.GetKeyDown(KeyCode.J))
         {
             anim.SetTrigger("Ataca");
@@ -45,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (estaMuerto) return;
+
         Movimiento();
     }
 
@@ -55,19 +65,26 @@ public class PlayerMovement : MonoBehaviour
         Vector2 direccionMovimiento = new Vector2(horizontal, vertical).normalized;
 
         bool isMoving = direccionMovimiento.magnitude > 0;
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        velocidadActual = Input.GetKey(KeyCode.LeftShift) ? velocidadRápida : velocidadNormal;
+        // Actualiza la velocidad dependiendo de si está corriendo o no
+        velocidadActual = isRunning ? velocidadRápida : velocidadNormal;
 
+        // Establece la velocidad del Rigidbody solo si el personaje se está moviendo
         rig.velocity = direccionMovimiento * velocidadActual;
 
         if (isMoving)
         {
             anim.SetFloat("Camina", rig.velocity.magnitude);
-            anim.SetBool("Corriendo", Input.GetKey(KeyCode.LeftShift));
+
+            // Activa o desactiva la animación de correr inmediatamente
+            anim.SetBool("Corriendo", isRunning);
         }
         else
         {
-            anim.SetFloat("Camina", 0); 
+            // Detén cualquier movimiento residual
+            rig.velocity = Vector2.zero;
+            anim.SetFloat("Camina", 0);
             anim.SetBool("Corriendo", false);
         }
 
@@ -91,12 +108,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
+
     public void CausarHerida()
     {
-        if (vidaPersonaje > 0)
+        if (vidaPersonaje > 0 && !invulnerable)
         {
             vidaPersonaje--;
-            uIManager.ActualizaCorazones(vidaPersonaje);
+            golpesRecibidos++;
+            uIManager.RecibirDaño(golpesRecibidos);
 
             if (audioSource != null && (sonidoHerida1 != null || sonidoHerida2 != null))
             {
@@ -111,9 +131,44 @@ public class PlayerMovement : MonoBehaviour
             if (vidaPersonaje == 0)
             {
                 anim.SetTrigger("Muere");
+                estaMuerto = true;
+                ConvertirASolido();
                 Invoke(nameof(Morir), 1f);
             }
+            else
+            {
+                StartCoroutine(ActivarInvulnerabilidad());
+            }
         }
+    }
+
+    private IEnumerator ActivarInvulnerabilidad()
+    {
+        invulnerable = true;
+        StartCoroutine(Parpadear());
+
+        yield return new WaitForSeconds(1f);
+
+        invulnerable = false;
+        spritePersonaje.color = Color.white;
+        parpadeando = false;
+    }
+
+    private IEnumerator Parpadear()
+    {
+        parpadeando = true;
+        while (parpadeando)
+        {
+            spritePersonaje.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            spritePersonaje.color = Color.white;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private void ConvertirASolido()
+    {
+        rig.bodyType = RigidbodyType2D.Static;
     }
 
     private void Morir()
@@ -126,31 +181,52 @@ public class PlayerMovement : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void RegenerarCorazon()
+    public void Curar(int cantidad, bool curacionCompleta)
     {
-        if (vidaPersonaje < 3)
+        if (estaMuerto) return;
+
+        if (curacionCompleta)
         {
-            vidaPersonaje++;
-            uIManager.ActualizaCorazones(vidaPersonaje);
+            vidaPersonaje = 3;
+            uIManager.QuitarSangre();
+            golpesRecibidos = 0;
+        }
+        else
+        {
+            vidaPersonaje += cantidad;
+            vidaPersonaje = Mathf.Min(vidaPersonaje, 3);
+
+            if (vidaPersonaje == 3)
+            {
+                uIManager.QuitarSangre();
+                golpesRecibidos = 0;
+            }
+        }
+
+        if (vidaPersonaje > 1)
+        {
+            uIManager.DetenerMusicaCorazonBajo();
         }
     }
 
     public void AumentarVida(int cantidad)
     {
+        if (estaMuerto) return;
+
         vidaPersonaje += cantidad;
         vidaPersonaje = Mathf.Min(vidaPersonaje, 3);
-        uIManager.ActualizaCorazones(vidaPersonaje);
+        uIManager.QuitarSangre();
     }
 
     public void AumentarVelocidad(float porcentaje)
     {
-        Debug.Log("AumentarVelocidad llamado con porcentaje: " + porcentaje);
+        if (estaMuerto) return;
+
         if (!velocidadIncrementada)
         {
             velocidadNormal += velocidadNormal * porcentaje;
             velocidadRápida += velocidadRápidaOriginal * porcentaje;
             velocidadIncrementada = true;
-            Debug.Log("Velocidad incrementada: Velocidad Normal = " + velocidadNormal + ", Velocidad Rápida = " + velocidadRápida);
             StartCoroutine(ReiniciarVelocidad());
         }
     }
@@ -159,8 +235,8 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         velocidadNormal = 7f;
-        velocidadRápida = 13f;
+        velocidadRápida = 10f;
         velocidadIncrementada = false;
-        Debug.Log("Velocidad reiniciada: Velocidad Normal = " + velocidadNormal + ", Velocidad Rápida = " + velocidadRápida);
     }
+
 }

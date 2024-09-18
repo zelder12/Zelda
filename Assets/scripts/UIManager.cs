@@ -1,6 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -9,24 +9,25 @@ public class UIManager : MonoBehaviour
 {
     private int totalMonedas;
     private int precioObjeto;
+    private int golpesRecibidos = 0;
 
     [SerializeField] private TMP_Text textoMonedas;
-    [SerializeField] private List<GameObject> listaCorazones;
-    [SerializeField] private Sprite corazonActivado;
-    [SerializeField] private Sprite corazonDesactivado;
     [SerializeField] private GameObject cajaTexto;
     [SerializeField] private TMP_Text textoDialogo;
     [SerializeField] private GameObject panelEquipo;
-    [SerializeField] private GameObject panelGameOver; 
-    [SerializeField] private Button botonReiniciar; 
-    [SerializeField] private Button botonMenuInicial; 
+    [SerializeField] private GameObject panelGameOver;
+    [SerializeField] private Button botonReiniciar;
+    [SerializeField] private Button botonMenuInicial;
     [SerializeField] private ObjectManager objectManager;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip musicaCorazonBajo;
     [SerializeField] private AudioClip musicaGameOver;
 
-    private List<string> inventario = new List<string>();
+    [SerializeField] private Image sangreScreen;
+    [SerializeField] private float incrementoSangre = 0.5f;
+
+    private List<Objetos> inventario = new List<Objetos>();
     private const int LimiteTotalObjetos = 3;
 
     private void Start()
@@ -36,38 +37,93 @@ public class UIManager : MonoBehaviour
         botonReiniciar.onClick.AddListener(ReiniciarJuego);
         botonMenuInicial.onClick.AddListener(IrAlMenuInicial);
 
-        panelGameOver.SetActive(false); 
+        panelGameOver.SetActive(false);
+        sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0);
+        sangreScreen.gameObject.SetActive(false);
     }
 
-    private void SumarMoneda(int moneda)
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            UsarObjetoEnInventario(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            UsarObjetoEnInventario(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            UsarObjetoEnInventario(2);
+        }
+    }
+
+     public void SumarMoneda(int moneda)
     {
         totalMonedas += moneda;
         textoMonedas.text = totalMonedas.ToString();
     }
 
-    public void RestaCorazones(int indice)
+    public void RecibirDaño(int golpes)
     {
-        if (indice >= 0 && indice < listaCorazones.Count)
-        {
-            Image imagenCorazon = listaCorazones[indice].GetComponent<Image>();
-            imagenCorazon.sprite = corazonDesactivado;
+        golpesRecibidos = golpes;
+        sangreScreen.gameObject.SetActive(true);
 
-            if (indice == 0 && listaCorazones.Count == 1)
+        if (golpesRecibidos == 1)
+        {
+            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0.25f);
+            DetenerMusicaCorazonBajo();
+        }
+        else if (golpesRecibidos == 2)
+        {
+            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
+            ReproducirMusicaCorazonBajo();
+        }
+        else if (golpesRecibidos >= 3)
+        {
+            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
+            if (!panelGameOver.activeSelf) 
             {
-                ReproducirMusicaCorazonBajo();
-                StartCoroutine(ActivarGameOver()); 
+                IniciarGameOver();
             }
         }
     }
 
+    public void QuitarSangre()
+    {
+        if (golpesRecibidos > 0)
+        {
+            golpesRecibidos--;
+
+            if (golpesRecibidos > 0)
+            {
+                if (golpesRecibidos == 1)
+                {
+                    sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0.25f);
+                }
+                else if (golpesRecibidos == 2)
+                {
+                    sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
+                }
+            }
+            else
+            {
+                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0);
+                sangreScreen.gameObject.SetActive(false);
+                DetenerMusicaCorazonBajo();
+            }
+        }
+    }
+
+
     public void IniciarGameOver()
     {
-        StartCoroutine(ActivarGameOver()); 
+        StartCoroutine(ActivarGameOver());
     }
 
     private IEnumerator ActivarGameOver()
     {
-        yield return new WaitForSeconds(2f); 
+        yield return new WaitForSeconds(2f);
         if (musicaGameOver != null && audioSource != null)
         {
             audioSource.clip = musicaGameOver;
@@ -79,12 +135,12 @@ public class UIManager : MonoBehaviour
 
     public void ReiniciarJuego()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void IrAlMenuInicial()
     {
-        SceneManager.LoadScene(0); 
+        SceneManager.LoadScene(0);
     }
 
     public void ActivaDesactivarCajaTextos(bool activado)
@@ -97,27 +153,7 @@ public class UIManager : MonoBehaviour
         textoDialogo.text = texto;
     }
 
-    public void ActualizaCorazones(int cantidad)
-    {
-        bool soloUnCorazon = cantidad == 1;
-
-        for (int i = 0; i < listaCorazones.Count; i++)
-        {
-            Image imagenCorazon = listaCorazones[i].GetComponent<Image>();
-            imagenCorazon.sprite = i < cantidad ? corazonActivado : corazonDesactivado;
-
-            if (i == 0 && soloUnCorazon)
-            {
-                ReproducirMusicaCorazonBajo();
-            }
-        }
-        if (!soloUnCorazon)
-        {
-            DetenerMusicaCorazonBajo();
-        }
-    }
-
-    private void ReproducirMusicaCorazonBajo()
+    public void ReproducirMusicaCorazonBajo()
     {
         if (audioSource != null && musicaCorazonBajo != null)
         {
@@ -127,7 +163,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void DetenerMusicaCorazonBajo()
+    public void DetenerMusicaCorazonBajo()
     {
         if (audioSource != null)
         {
@@ -165,7 +201,7 @@ public class UIManager : MonoBehaviour
 
         if (precioObjeto <= totalMonedas)
         {
-            if (objectManager.CalcularTotalObjetos() < LimiteTotalObjetos)
+            if (inventario.Count < LimiteTotalObjetos)
             {
                 totalMonedas -= precioObjeto;
                 textoMonedas.text = totalMonedas.ToString();
@@ -177,8 +213,8 @@ public class UIManager : MonoBehaviour
                     Objetos objetoScript = objetoInstanciado.GetComponent<Objetos>();
                     if (objetoScript != null)
                     {
-                        inventario.Add(objeto);
-                        objectManager.AddObjeto(objetoScript);
+                        inventario.Add(objetoScript);
+                        Debug.Log("Objeto adquirido y agregado al inventario: " + objeto);
                     }
                     else
                     {
@@ -189,8 +225,6 @@ public class UIManager : MonoBehaviour
                 {
                     Debug.LogWarning("El objeto no se pudo cargar desde Resources.");
                 }
-
-                Debug.Log("Objeto adquirido: " + objeto);
             }
             else
             {
@@ -200,6 +234,29 @@ public class UIManager : MonoBehaviour
         else
         {
             Debug.Log("No se puede adquirir el objeto. Monedas insuficientes.");
+        }
+    }
+
+    private void UsarObjetoEnInventario(int index)
+    {
+        if (index < 0 || index >= inventario.Count)
+        {
+            Debug.LogWarning("Índice fuera de rango: " + index);
+            return;
+        }
+
+        Objetos item = inventario[index];
+
+        if (item != null)
+        {
+            Debug.Log("Usando objeto en el índice: " + index);
+            item.UsarObjeto();
+
+            inventario.RemoveAt(index);
+        }
+        else
+        {
+            Debug.LogWarning("El objeto en la posición " + index + " ya ha sido destruido.");
         }
     }
 

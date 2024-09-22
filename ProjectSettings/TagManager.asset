@@ -7,6 +7,15 @@ TagManager:
   - target
   - Orco
   - Espada
+  - inventario
+  - inventario-com
+  - slot
+  - general-events
+  - objeto-pickeable
+  - drag-parent
+  - barra-herramientas
+  - pocion
+  - tienda
   layers:
   - Default
   - TransparentFX

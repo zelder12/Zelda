@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
     private Dictionary<Objetos.ObjetosEquipo, List<Objetos>> objetosEquipoMap = new Dictionary<Objetos.ObjetosEquipo, List<Objetos>>();
-    private const int LimiteTotalObjetos = 3;
+    private const int LimiteTotalObjetos = 9;
 
     public void AddObjeto(Objetos objeto)
     {

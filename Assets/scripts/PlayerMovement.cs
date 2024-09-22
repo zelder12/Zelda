@@ -25,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     private bool parpadeando = false;
     private bool estaMuerto = false;
 
+    GameObject barra_herramientas;
+    //GameObject inventario_com;
+    //private bool inventoryVisible = false;
+
     private void Awake()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -32,6 +36,10 @@ public class PlayerMovement : MonoBehaviour
         spritePersonaje = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         playerCollider = GetComponent<Collider2D>();
+
+        //inventario_com = GameObject.FindGameObjectWithTag("inventario-com");
+        //inventario_com.SetActive(false);
+
 
         if (audioSource == null)
         {
@@ -49,6 +57,74 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetTrigger("Ataca");
         }
+
+        barra_herramientas = GameObject.FindGameObjectWithTag("barra-herramientas");
+
+        if (barra_herramientas == null)
+        {
+            Debug.LogError("No se encontró ningún objeto con la etiqueta 'barra-herramientas'");
+            return;
+        }
+
+        // Accede al hijo 'inventorySlots' para obtener los slots
+        Transform inventorySlotTransform = barra_herramientas.transform.Find("inventorySlots");
+        if (inventorySlotTransform == null)
+        {
+            Debug.LogError("No se encontró 'inventorySlot' dentro de 'barra-herramientas'");
+            return;
+        }
+
+        int totalSlots = inventorySlotTransform.childCount;
+
+        for (int i = 1; i <= totalSlots; i++)
+        {
+            if (Input.GetKeyUp(KeyCode.Alpha1 + (i - 1))) // Ajusta la tecla
+            {
+                // Asegúrate de que i-1 es un índice válido
+                if (i - 1 < totalSlots)
+                {
+                    GameObject slot = inventorySlotTransform.GetChild(i - 1).gameObject;
+
+                    if (slot.transform.childCount > 0)
+                    {
+                        AttributesController attributesController = slot.GetComponentInChildren<AttributesController>();
+                        if (attributesController != null)
+                        {
+                            attributesController.accion();
+                        }
+                        else
+                        {
+                            Debug.LogError($"No se encontró el componente AttributesController en el slot {i}.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"El slot {i} está vacío.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"Índice {i - 1} fuera de rango. Total de slots: {totalSlots}.");
+                }
+            }
+        }
+        /*
+        if (Input.GetKeyUp(KeyCode.I))
+        {
+            if (!inventoryVisible)
+            {
+                inventoryVisible = true;
+                inventario_com.SetActive(inventoryVisible);
+                GameObject.FindGameObjectWithTag("general-events").GetComponent<InventoryController>().showInventory();
+            }
+            else
+            {
+                inventoryVisible = false;
+                inventario_com.SetActive(inventoryVisible);
+            }
+        }*/
+
+
     }
 
     private void FixedUpdate()

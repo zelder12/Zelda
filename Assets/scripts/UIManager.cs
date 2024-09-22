@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             UsarObjetoEnInventario(0);
         }
@@ -55,7 +55,7 @@ public class UIManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             UsarObjetoEnInventario(2);
-        }
+        }*/
     }
 
      public void SumarMoneda(int moneda)

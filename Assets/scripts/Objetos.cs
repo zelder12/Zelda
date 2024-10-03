@@ -9,14 +9,14 @@ public class Objetos : MonoBehaviour
         conejo
     };
 
-    [SerializeField] private ObjetosEquipo objetosEquipo;
+    [SerializeField] public ObjetosEquipo objetosEquipo;
 
     public ObjetosEquipo GetObjetosEquipo()
     {
         return objetosEquipo;
     }
 
-    public void UsarObjeto()
+    public void UsarObjeto(Inventario inventario, int slotIndex)
     {
         PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
 
@@ -41,6 +41,6 @@ public class Objetos : MonoBehaviour
                 break;
         }
 
-        Destroy(gameObject); // Destruye el objeto después de usarlo
+        inventario.VaciarSlot(slotIndex); // Vaciar el slot en lugar de destruir el objeto
     }
 }

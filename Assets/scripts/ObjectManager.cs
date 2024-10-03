@@ -1,10 +1,13 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
     private Dictionary<Objetos.ObjetosEquipo, List<Objetos>> objetosEquipoMap = new Dictionary<Objetos.ObjetosEquipo, List<Objetos>>();
     private const int LimiteTotalObjetos = 3;
+
+    public Inventario inventario; // Asegúrate de tener una referencia al Inventario
+    public int slotIndex; // Aquí puedes almacenar el índice del slot que quieres vaciar
 
     public void AddObjeto(Objetos objeto)
     {
@@ -40,7 +43,9 @@ public class ObjectManager : MonoBehaviour
             if (objetos.Count > 0)
             {
                 Objetos objeto = objetos[0];
-                objeto.UsarObjeto();
+
+                // Llamada corregida: ahora pasamos el inventario y el índice del slot
+                objeto.UsarObjeto(inventario, slotIndex);
 
                 objetos.RemoveAt(0);
 
@@ -71,4 +76,4 @@ public class ObjectManager : MonoBehaviour
         }
         return count;
     }
-}
+}*/

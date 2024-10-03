@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject panelGameOver;
     [SerializeField] private Button botonReiniciar;
     [SerializeField] private Button botonMenuInicial;
-    [SerializeField] private ObjectManager objectManager;
+    //[SerializeField] private ObjectManager objectManager;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip musicaCorazonBajo;
@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float incrementoSangre = 0.5f;
 
     private List<Objetos> inventario = new List<Objetos>();
-    private const int LimiteTotalObjetos = 3;
+    private const int LimiteTotalObjetos = 12;
 
     private void Start()
     {
@@ -42,21 +42,10 @@ public class UIManager : MonoBehaviour
         sangreScreen.gameObject.SetActive(false);
     }
 
-    private void Update()
+    /*private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            UsarObjetoEnInventario(0);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            UsarObjetoEnInventario(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            UsarObjetoEnInventario(2);
-        }
-    }
+       
+    }*/
 
      public void SumarMoneda(int moneda)
     {
@@ -237,28 +226,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void UsarObjetoEnInventario(int index)
-    {
-        if (index < 0 || index >= inventario.Count)
-        {
-            Debug.LogWarning("Índice fuera de rango: " + index);
-            return;
-        }
-
-        Objetos item = inventario[index];
-
-        if (item != null)
-        {
-            Debug.Log("Usando objeto en el índice: " + index);
-            item.UsarObjeto();
-
-            inventario.RemoveAt(index);
-        }
-        else
-        {
-            Debug.LogWarning("El objeto en la posición " + index + " ya ha sido destruido.");
-        }
-    }
+    
 
     #endregion
 }

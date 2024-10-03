@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -25,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private bool parpadeando = false;
     private bool estaMuerto = false;
 
+    private Inventario inventarioScript;
     private void Awake()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -32,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
         spritePersonaje = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         playerCollider = GetComponent<Collider2D>();
+
+        inventarioScript = GetComponent<Inventario>();
+        if (inventarioScript == null)
+        {
+            Debug.LogError("No se encontró el componente Inventario en el GameObject.");
+        }
 
         if (audioSource == null)
         {
@@ -54,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (estaMuerto) return;
-
+        if (inventarioScript.Activar_inv) return;
         Movimiento();
     }
 

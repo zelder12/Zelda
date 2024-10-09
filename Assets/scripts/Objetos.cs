@@ -6,7 +6,8 @@ public class Objetos : MonoBehaviour
     {
         gato,
         fiera,
-        conejo
+        conejo,
+        escudoBurbuja
     };
 
     [SerializeField] public ObjetosEquipo objetosEquipo;
@@ -39,8 +40,11 @@ public class Objetos : MonoBehaviour
             case ObjetosEquipo.conejo:
                 playerMovement.AumentarVelocidad(1); // Aumenta la velocidad
                 break;
+            case ObjetosEquipo.escudoBurbuja:
+                playerMovement.ActivarEscudoBurbuja(5.0f); // Activa el escudo por 5 segundos
+                break;
         }
 
-        inventario.VaciarSlot(slotIndex); // Vaciar el slot en lugar de destruir el objeto
+        inventario.VaciarSlot(slotIndex);
     }
 }

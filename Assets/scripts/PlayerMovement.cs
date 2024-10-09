@@ -12,18 +12,25 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private AudioClip sonidoHerida2;
     [SerializeField] private UIManager uIManager;
 
+    [SerializeField] private GameObject burbujaVisual;
+
+
     private Rigidbody2D rig;
     private Animator anim;
     private SpriteRenderer spritePersonaje;
     private AudioSource audioSource;
     private Collider2D playerCollider;
-    private int vidaPersonaje = 3;
-    private int golpesRecibidos = 0;
+    public int vidaPersonaje = 3;
+    public int golpesRecibidos = 0;
+    public Vector3 burbujaOffset;
+
+    private Vector3 direccionMovimiento;
 
     private float velocidadActual;
     private bool velocidadIncrementada = false;
     private float velocidadRápidaOriginal;
-    private bool invulnerable = false;
+    public bool invulnerable = false;
+    private bool burbujaActiva = false;
     private bool parpadeando = false;
     private bool estaMuerto = false;
 
@@ -35,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         spritePersonaje = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         playerCollider = GetComponent<Collider2D>();
+        burbujaOffset = new Vector3(0.3f, 0, 0);
 
         inventarioScript = GetComponent<Inventario>();
         if (inventarioScript == null)
@@ -53,17 +61,28 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         if (estaMuerto) return;
+        if (inventarioScript.Activar_inv)
+        {
+            rig.velocity = Vector2.zero; // Detener cualquier movimiento
+            direccionMovimiento = Vector3.zero;
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.J))
         {
             anim.SetTrigger("Ataca");
         }
+        ActualizarBurbujaVisual();
     }
 
     private void FixedUpdate()
     {
         if (estaMuerto) return;
-        if (inventarioScript.Activar_inv) return;
+        if (inventarioScript.Activar_inv)
+        {
+            rig.velocity = Vector2.zero; // Detener la velocidad
+            return;
+        }
         Movimiento();
     }
 
@@ -121,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void CausarHerida()
     {
-        if (vidaPersonaje > 0 && !invulnerable)
+        if (vidaPersonaje > 0 && !invulnerable && !burbujaActiva)
         {
             vidaPersonaje--;
             golpesRecibidos++;
@@ -151,16 +170,78 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void ActualizarBurbujaVisual()
+    {
+        if (burbujaVisual != null)
+        {
+            bool isFlipped = spritePersonaje.flipX;
+
+            if (isFlipped)
+            {
+                burbujaVisual.transform.position = GameObject.FindWithTag("Player").transform.position - burbujaOffset;
+            }
+            else
+            {
+                burbujaVisual.transform.position = GameObject.FindWithTag("Player").transform.position + burbujaOffset;
+            }
+                
+            Vector3 escalaBurbuja = new Vector3(4f, 4f, 0); // Ajusta según tus necesidades
+            burbujaVisual.transform.localScale = escalaBurbuja;
+        }
+    }
+
+    public void ActivarEscudoBurbuja(float duracion)
+    {
+        if (estaMuerto) return;
+
+        // Activar invulnerabilidad
+        burbujaActiva = true;
+        invulnerable = true;
+        Debug.Log("Escudo Burbuja activado!");
+
+        // Mostrar la burbuja visual
+        if (burbujaVisual != null)
+        {
+            burbujaVisual.SetActive(true);
+        }
+
+        // Detener cualquier Coroutine anterior que pudiera cambiar la invulnerabilidad
+        StopCoroutine(DesactivarEscudoBurbuja(duracion));
+        StartCoroutine(DesactivarEscudoBurbuja(duracion));
+    }
+
+    private IEnumerator DesactivarEscudoBurbuja(float duracion)
+    {
+        // Esperar la duración del escudo
+        yield return new WaitForSeconds(duracion);
+
+        // Desactivar invulnerabilidad
+        burbujaActiva = false;
+        invulnerable = false;
+
+        // Ocultar la burbuja visual
+        if (burbujaVisual != null)
+        {
+            burbujaVisual.SetActive(false);
+        }
+
+        Debug.Log("Escudo Burbuja desactivado!");
+    }
+
+
+
     private IEnumerator ActivarInvulnerabilidad()
     {
         invulnerable = true;
         StartCoroutine(Parpadear());
 
         yield return new WaitForSeconds(1f);
-
-        invulnerable = false;
         spritePersonaje.color = Color.white;
         parpadeando = false;
+        if (!burbujaActiva)
+        {
+            invulnerable = false;
+        }
     }
 
     private IEnumerator Parpadear()

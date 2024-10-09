@@ -25,7 +25,7 @@ public class Inventario : MonoBehaviour
     {
         if (coll.CompareTag("Item"))
         {
-            AddObjeto(coll.gameObject); // Reutiliza el método para añadir objetos
+            AddObjeto(coll.gameObject);
         }
     }
 
@@ -46,7 +46,7 @@ public class Inventario : MonoBehaviour
                     objetoInventario.objetosEquipo = objetoRecogido.GetObjetosEquipo();
                 }
 
-                Destroy(item); // Elimina el objeto del escenario
+                Destroy(item);
                 break;
             }
         }
@@ -75,7 +75,7 @@ public class Inventario : MonoBehaviour
 
             if (objeto != null)
             {
-                objeto.UsarObjeto(this, index); // Pasamos el inventario y el índice del slot
+                objeto.UsarObjeto(this, index);
                 VaciarSlot(index);
             }
         }
@@ -91,7 +91,7 @@ public class Inventario : MonoBehaviour
             Objetos objeto = Bag[index].GetComponent<Objetos>();
             if (objeto != null)
             {
-                Destroy(objeto); // Eliminar el componente Objetos del slot
+                Destroy(objeto);
             }
         }
     }
@@ -100,13 +100,13 @@ public class Inventario : MonoBehaviour
     {
         if (idEquipo >= 0 && idEquipo < Equipo.Count)
         {
-            Equipo[idEquipo].sprite = null; // Eliminar la imagen del objeto
-            Equipo[idEquipo].enabled = false; // Desactivar el slot para reutilizarlo más tarde
+            Equipo[idEquipo].sprite = null;
+            Equipo[idEquipo].enabled = false;
 
             Objetos objeto = Equipo[idEquipo].GetComponent<Objetos>();
             if (objeto != null)
             {
-                Destroy(objeto); // Eliminar el componente Objetos del slot
+                Destroy(objeto);
             }
 
             Debug.Log($"Slot de equipo {idEquipo} vaciado.");
@@ -117,10 +117,9 @@ public class Inventario : MonoBehaviour
 
     private void DetectarTeclaEquipo()
     {
-        // Recorremos los slots del equipo y verificamos si se presiona la tecla correspondiente
         for (int i = 0; i < Equipo.Count; i++)
         {
-            if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i))) // Alpha1 es el número 1 en el teclado
+            if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i)))
             {
                 UsarObjetoDelEquipo(i);
             }
@@ -134,11 +133,9 @@ public class Inventario : MonoBehaviour
             Objetos objetoEnEquipo = Equipo[idEquipo].GetComponent<Objetos>();
             if (objetoEnEquipo != null)
             {
-                // Usar el objeto
                 objetoEnEquipo.UsarObjeto(this, idEquipo);
-                Debug.Log($"Objeto del equipo en ID_equipo {idEquipo} utilizado.");
+                //Debug.Log($"Objeto del equipo en ID_equipo {idEquipo} utilizado.");
 
-                // Vaciar el slot después de usar el objeto
                 VaciarSlotEquipo(idEquipo);
             }
             else
@@ -153,8 +150,6 @@ public class Inventario : MonoBehaviour
     }
 
 
-
-    // Ya tienes lógica para navegar y manejar el inventario
     public void Navegar()
     {
         switch (Fases_inv)
@@ -165,18 +160,18 @@ public class Inventario : MonoBehaviour
 
                 inv[1].SetActive(false);
 
-                if (Input.GetKeyDown(KeyCode.W) && ID_equipo > 0)
+                if (Input.GetKeyDown(KeyCode.A) && ID_equipo > 0)
                 {
                     ID_equipo--;
                 }
-                if (Input.GetKeyDown(KeyCode.S) && ID_equipo < Equipo.Count - 1)
+                if (Input.GetKeyDown(KeyCode.D) && ID_equipo < Equipo.Count - 1)
                 {
                     ID_equipo++;
                 }
 
                 Selector.transform.position = Equipo[ID_equipo].transform.position;
 
-                if (Input.GetKeyDown(KeyCode.F) && Activar_inv)
+                if (Input.GetKeyDown(KeyCode.Return) && Activar_inv)
                 {
                     Fases_inv = 1;
                 }
@@ -186,14 +181,13 @@ public class Inventario : MonoBehaviour
                 Selector.SetActive(true);
                 Opciones.SetActive(false);
 
-                if (Input.GetKeyDown(KeyCode.F) && Bag[ID].GetComponent<Image>().enabled == true)
+                if (Input.GetKeyDown(KeyCode.Return) && Bag[ID].GetComponent<Image>().enabled == true)
                 {
                     Fases_inv = 2;
                 }
 
                 inv[1].SetActive(true);
 
-                // *** Aquí verificamos que el objeto no haya sido destruido ***
                 if (ID >= 0 && ID < Bag.Count && Bag[ID] != null)
                 {
                     if (Input.GetKeyDown(KeyCode.D) && ID < Bag.Count - 1)
@@ -213,29 +207,27 @@ public class Inventario : MonoBehaviour
                         ID += 4;
                     }
 
-                    // Actualizamos la posición del selector
                     if (Bag.Count > 0 && ID >= 0 && ID < Bag.Count && Bag[ID] != null)
                     {
                         Selector.transform.position = Bag[ID].transform.position;
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.G) && Activar_inv)
+                if (Input.GetKeyDown(KeyCode.Tab) && Activar_inv)
                 {
                     Fases_inv = 0;
                 }
                 break;
 
             case 2:
-                // Detecta si se presiona la tecla Esc para cerrar las opciones de selección
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    Fases_inv = 1; // Regresar a la fase donde no hay opciones
-                    Opciones.SetActive(false); // Desactiva las opciones
-                    Selector.SetActive(true); // Reactiva el selector
+                    Fases_inv = 1;
+                    Opciones.SetActive(false);
+                    Selector.SetActive(true);
                 }
 
-                if (Input.GetKeyDown(KeyCode.G))
+                if (Input.GetKeyDown(KeyCode.Return))
                 {
                     Fases_inv = 1;
                 }
@@ -260,14 +252,13 @@ public class Inventario : MonoBehaviour
                         Seleccion[1].sprite = Seleccion_Sprite[0];
                         Seleccion[2].sprite = Seleccion_Sprite[0];
 
-                        if (Input.GetKeyDown(KeyCode.F))
+                        if (Input.GetKeyDown(KeyCode.Return))
                         {
                             if (Equipo[ID_equipo].GetComponent<Image>().enabled == false)
                             {
                                 Equipo[ID_equipo].GetComponent<Image>().sprite = Bag[ID].GetComponent<Image>().sprite;
                                 Equipo[ID_equipo].GetComponent<Image>().enabled = true;
 
-                                // Copiar el componente Objetos al slot del equipo
                                 Objetos objetoEnInventario = Bag[ID].GetComponent<Objetos>();
                                 if (objetoEnInventario != null)
                                 {
@@ -275,7 +266,7 @@ public class Inventario : MonoBehaviour
                                     objetoEnEquipo.objetosEquipo = objetoEnInventario.GetObjetosEquipo();
                                 }
 
-                                VaciarSlot(ID); // Vaciar el slot del inventario
+                                VaciarSlot(ID);
                             }
 
                             else
@@ -294,13 +285,12 @@ public class Inventario : MonoBehaviour
                         Seleccion[1].sprite = Seleccion_Sprite[1];
                         Seleccion[2].sprite = Seleccion_Sprite[0];
 
-                        if (Input.GetKeyDown(KeyCode.F))
+                        if (Input.GetKeyDown(KeyCode.Return))
                         {
-                            // Usar el objeto
                             Objetos objetoEnUso = Bag[ID].GetComponent<Objetos>();
                             if (objetoEnUso != null)
                             {
-                                objetoEnUso.UsarObjeto(this, ID); // Llamar a la función que usa el objeto
+                                objetoEnUso.UsarObjeto(this, ID);
                             }
 
                             Fases_inv = 1;
@@ -310,16 +300,15 @@ public class Inventario : MonoBehaviour
                     case 2: // Descartar objeto
                         Seleccion[0].sprite = Seleccion_Sprite[0];
                         Seleccion[1].sprite = Seleccion_Sprite[0];
-                        Seleccion[2].sprite = Seleccion_Sprite[1]; // Resaltar la opción 3
+                        Seleccion[2].sprite = Seleccion_Sprite[1];
 
-                        if (Input.GetKeyDown(KeyCode.F))
+                        if (Input.GetKeyDown(KeyCode.Return))
                         {
-                            // Descartar el objeto
                             Debug.Log("Objeto descartado: " + Bag[ID].GetComponent<Objetos>().objetosEquipo);
 
-                            VaciarSlot(ID); // Vaciar slot en lugar de destruir el objeto
+                            VaciarSlot(ID);
 
-                            Fases_inv = 1; // Regresar a la fase anterior
+                            Fases_inv = 1;
                         }
                         break;
                 }
@@ -349,7 +338,7 @@ public class Inventario : MonoBehaviour
             inv[0].SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             Activar_inv = !Activar_inv;
         }

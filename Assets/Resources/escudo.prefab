@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7837163349460412323}
   - component: {fileID: 3952951217676879726}
   m_Layer: 5
-  m_Name: gato
+  m_Name: escudo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1110956755, guid: 5fa05a6bc9f3af74093ab0a0a7c87f9e, type: 3}
+  m_Sprite: {fileID: 603005757, guid: 5fa05a6bc9f3af74093ab0a0a7c87f9e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe76444281dd1848a32ad6fe212a65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objetosEquipo: 0
+  objetosEquipo: 3
 --- !u!212 &3952951217676879726
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -188,7 +188,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1110956755, guid: 5fa05a6bc9f3af74093ab0a0a7c87f9e, type: 3}
+  m_Sprite: {fileID: 603005757, guid: 5fa05a6bc9f3af74093ab0a0a7c87f9e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

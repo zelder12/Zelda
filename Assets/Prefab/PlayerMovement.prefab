@@ -362,8 +362,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.075387955, y: 0.18283844}
-  m_Size: {x: 1.9655693, y: 2.04}
+  m_Offset: {x: 0.3, y: 0.3}
+  m_Size: {x: 2, y: 2}
   m_Direction: 0
 --- !u!50 &6831195928175808071
 Rigidbody2D:
@@ -407,4 +407,11 @@ MonoBehaviour:
   velocidadNormal: 7
   "velocidadR\xE1pida": 12
   ColEspada: {fileID: 8049442567356135812}
+  sonidoHerida1: {fileID: 0}
+  sonidoHerida2: {fileID: 0}
   uIManager: {fileID: 0}
+  burbujaVisual: {fileID: 0}
+  vidaPersonaje: 3
+  golpesRecibidos: 0
+  burbujaOffset: {x: 0, y: 0, z: 0}
+  invulnerable: 0

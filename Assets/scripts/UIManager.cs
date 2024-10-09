@@ -14,11 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text textoMonedas;
     [SerializeField] private GameObject cajaTexto;
     [SerializeField] private TMP_Text textoDialogo;
-    [SerializeField] private GameObject panelEquipo;
     [SerializeField] private GameObject panelGameOver;
     [SerializeField] private Button botonReiniciar;
     [SerializeField] private Button botonMenuInicial;
-    //[SerializeField] private ObjectManager objectManager;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip musicaCorazonBajo;
@@ -26,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Image sangreScreen;
     [SerializeField] private float incrementoSangre = 0.5f;
+
+    [SerializeField] private Inventario inventarioScript;
 
     private List<Objetos> inventario = new List<Objetos>();
     private const int LimiteTotalObjetos = 12;
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
        
     }*/
 
-     public void SumarMoneda(int moneda)
+    public void SumarMoneda(int moneda)
     {
         totalMonedas += moneda;
         textoMonedas.text = totalMonedas.ToString();
@@ -56,26 +56,26 @@ public class UIManager : MonoBehaviour
     public void RecibirDaño(int golpes)
     {
         golpesRecibidos = golpes;
-        sangreScreen.gameObject.SetActive(true);
+        if(!(golpesRecibidos == 0))
+        {
+            sangreScreen.gameObject.SetActive(true);
 
-        if (golpesRecibidos == 1)
-        {
-            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0.25f);
-            DetenerMusicaCorazonBajo();
-        }
-        else if (golpesRecibidos == 2)
-        {
-            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
-            ReproducirMusicaCorazonBajo();
-        }
-        else if (golpesRecibidos >= 3)
-        {
-            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
-            if (!panelGameOver.activeSelf) 
+            if (golpesRecibidos == 1)
             {
-                IniciarGameOver();
+                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0.25f);
+                DetenerMusicaCorazonBajo();
+            }
+            else if (golpesRecibidos == 2)
+            {
+                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
+                ReproducirMusicaCorazonBajo();
             }
         }
+        else
+        {
+            sangreScreen.gameObject.SetActive(false);
+        }
+        
     }
 
     public void QuitarSangre()
@@ -86,14 +86,8 @@ public class UIManager : MonoBehaviour
 
             if (golpesRecibidos > 0)
             {
-                if (golpesRecibidos == 1)
-                {
-                    sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0.25f);
-                }
-                else if (golpesRecibidos == 2)
-                {
-                    sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
-                }
+                float alpha = golpesRecibidos == 1 ? 0.25f : 1f;
+                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, alpha);
             }
             else
             {
@@ -175,6 +169,9 @@ public class UIManager : MonoBehaviour
             case "conejo":
                 precioObjeto = 10;
                 break;
+            case "escudoBurbuja":
+                precioObjeto = 5;
+                break;
             default:
                 precioObjeto = 0;
                 break;
@@ -190,7 +187,9 @@ public class UIManager : MonoBehaviour
 
         if (precioObjeto <= totalMonedas)
         {
-            if (inventario.Count < LimiteTotalObjetos)
+            Inventario inventarioScript = FindObjectOfType<Inventario>();
+
+            if (inventarioScript != null && inventarioScript.CalcularTotalObjetos() < LimiteTotalObjetos)
             {
                 totalMonedas -= precioObjeto;
                 textoMonedas.text = totalMonedas.ToString();
@@ -198,11 +197,12 @@ public class UIManager : MonoBehaviour
                 GameObject equipo = (GameObject)Resources.Load(objeto);
                 if (equipo != null)
                 {
-                    GameObject objetoInstanciado = Instantiate(equipo, Vector3.zero, Quaternion.identity, panelEquipo.transform);
+                    GameObject objetoInstanciado = Instantiate(equipo, Vector3.zero, Quaternion.identity);
                     Objetos objetoScript = objetoInstanciado.GetComponent<Objetos>();
+
                     if (objetoScript != null)
                     {
-                        inventario.Add(objetoScript);
+                        inventarioScript.AddObjeto(objetoInstanciado);
                         Debug.Log("Objeto adquirido y agregado al inventario: " + objeto);
                     }
                     else
@@ -225,8 +225,5 @@ public class UIManager : MonoBehaviour
             Debug.Log("No se puede adquirir el objeto. Monedas insuficientes.");
         }
     }
-
-    
-
     #endregion
 }

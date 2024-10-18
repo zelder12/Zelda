@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Wizard
+  m_EditorClassIdentifier: Assembly-CSharp::Character
+  characterName: Wizard
+  leftHand: {fileID: 959746669, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  rightHand: {fileID: -1818126555, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  leftHandUsing: {fileID: -908079265, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  rightHandUsing: {fileID: 1650587750, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  Salud: 0
+  Estamina: 0
+  Saciedad: 0
+  Carrera: 0
+  Fuerza: 0
+  Esencia: 0
+  Armadura: 0
+  "\xCDmpetu": 0
+  "Perforaci\xF3n": 0
+  "Energ\xEDa": 0
+  Coraza: 0
+  Ritmo: 0
+  Poder: 0
+  Mana: 0
+  Cordura: 0
+  Claridad: 0
+  Carisma: 0
+  Inteligencia: 0
+  Suerte: 0
+  Valor: 0

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Objetos : MonoBehaviour
 {
+    //ANGEL
+    public Item weaponItem;
+    //FIN
     public enum ObjetosEquipo
     {
         gato,
@@ -46,5 +49,14 @@ public class Objetos : MonoBehaviour
         }
 
         inventario.VaciarSlot(slotIndex);
+
+        //switch (weaponItem.objetosEquipo)
+        //{
+        //    case Item.ObjetosEquipo.Espada:
+                
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 }

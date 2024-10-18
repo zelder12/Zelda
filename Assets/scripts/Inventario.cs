@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class Inventario : MonoBehaviour
 {
+
     public List<GameObject> Bag = new List<GameObject>();
+    public List<GameObject> BagObjetos = new List<GameObject>();
+
     public GameObject[] inv;
     public bool Activar_inv;
 
     public GameObject Selector;
     public int ID;
 
+    public List<GameObject> EquipoObjetos = new List<GameObject>();
     public List<Image> Equipo = new List<Image>();
     public int ID_equipo;
     public int Fases_inv;
@@ -32,27 +36,32 @@ public class Inventario : MonoBehaviour
     public void AddObjeto(GameObject item)
     {
         Objetos objetoRecogido = item.GetComponent<Objetos>();
-
-        for (int i = 0; i < Bag.Count; i++)
+        Weapon armaRecodiga = item.GetComponent<Weapon>();
+        if (objetoRecogido != null)
         {
-            if (!Bag[i].GetComponent<Image>().enabled)
+            for (int i = 0; i < Bag.Count; i++)
             {
-                Bag[i].GetComponent<Image>().enabled = true;
-                Bag[i].GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
-
-                if (objetoRecogido != null)
+                if (!Bag[i].GetComponent<Image>().enabled)
                 {
-                    Objetos objetoInventario = Bag[i].AddComponent<Objetos>();
-                    objetoInventario.objetosEquipo = objetoRecogido.GetObjetosEquipo();
+                    Bag[i].GetComponent<Image>().enabled = true;
+                    Bag[i].GetComponent<Image>().sprite = item.GetComponent<SpriteRenderer>().sprite;
+                    if (objetoRecogido != null)
+                    {
+                        Objetos objetoInventario = Bag[i].AddComponent<Objetos>();
+                    }
+                    break;
                 }
-
-                Destroy(item);
-                break;
             }
+        }
+        
+        if (item.GetComponent<Weapon>() != null)
+        {
+            gameObject.GetComponent<PlayerMovement>().armaR = item.gameObject;
+            Debug.Log("SE GUARDO EL ARMA");
         }
     }
 
-    public int CalcularTotalObjetos()
+    public int CalcularTotalObjetos() //NO SE USA
     {
         int totalObjetos = 0;
 
@@ -72,7 +81,7 @@ public class Inventario : MonoBehaviour
         if (index >= 0 && index < Bag.Count)
         {
             Objetos objeto = Bag[index].GetComponent<Objetos>();
-
+ 
             if (objeto != null)
             {
                 objeto.UsarObjeto(this, index);

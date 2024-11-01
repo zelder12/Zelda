@@ -2,21 +2,25 @@ using UnityEngine;
 
 public class Objetos : MonoBehaviour
 {
+    //ANGEL
+    public Item weaponItem;
+    //FIN
     public enum ObjetosEquipo
     {
         gato,
         fiera,
-        conejo
+        conejo,
+        escudoBurbuja
     };
 
-    [SerializeField] private ObjetosEquipo objetosEquipo;
+    [SerializeField] public ObjetosEquipo objetosEquipo;
 
     public ObjetosEquipo GetObjetosEquipo()
     {
         return objetosEquipo;
     }
 
-    public void UsarObjeto()
+    public void UsarObjeto(Inventario inventario, int slotIndex)
     {
         PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
 
@@ -39,8 +43,20 @@ public class Objetos : MonoBehaviour
             case ObjetosEquipo.conejo:
                 playerMovement.AumentarVelocidad(1); // Aumenta la velocidad
                 break;
+            case ObjetosEquipo.escudoBurbuja:
+                playerMovement.ActivarEscudoBurbuja(5.0f); // Activa el escudo por 5 segundos
+                break;
         }
 
-        Destroy(gameObject); // Destruye el objeto después de usarlo
+        inventario.VaciarSlot(slotIndex);
+
+        //switch (weaponItem.objetosEquipo)
+        //{
+        //    case Item.ObjetosEquipo.Espada:
+                
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 }

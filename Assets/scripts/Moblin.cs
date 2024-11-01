@@ -16,6 +16,7 @@ public class EnemyMovement : MonoBehaviour
     public float tiempoEntreAtaques = 3f;
     public Collider2D colEspada;
 
+    public Enemigo datos;
     private void Awake()
     {
         agente = GetComponent<NavMeshAgent>();
@@ -68,6 +69,12 @@ public class EnemyMovement : MonoBehaviour
             }
         }
         RotarOrco();
+
+        if (datos.vida <= 0)
+        {
+            StopAllCoroutines();
+            Destroy(gameObject);
+        }
     }
 
     void RotarOrco()
@@ -97,11 +104,7 @@ public class EnemyMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision == colEspada)
-        {
-            StopAllCoroutines();
-            Destroy(gameObject);
-        }
+
     }
 
 

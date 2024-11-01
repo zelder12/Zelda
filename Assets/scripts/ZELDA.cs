@@ -18,7 +18,7 @@ public class NPCInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (cercaDelJugador && Input.GetKeyDown(KeyCode.E)) 
+        if (cercaDelJugador && Input.GetKeyDown(KeyCode.F)) 
         {
             MostrarSiguienteTexto();
         }

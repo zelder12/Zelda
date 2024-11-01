@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Espada
+  m_EditorClassIdentifier: Assembly-CSharp::Belicas
+  sprite: {fileID: 984448284, guid: 24cf8d1ea6cccf346b4689ca919f99c2, type: 3}
+  objetosEquipo: 0
+  Descripcion: 
+  Peso: 0
+  Valor: 0
+  Rareza: 0
+  Durabilidad: 0
+  dcc: 3
+  dpc: 0
+  dmc: 0
+  complejidad: 0
+  limiteEfectos: 0
+  limiteEncantamientos: 0
+  ejecucion: 0.5
+  cEstamina: 0
+  cEsencia: 5
+  cEnergia: 0
+  cMana: 0
+  alcance: 0
+  estadoAtacando: 0
+  estadoUsando: 0
+  masas: 0
+  cadencia: 0

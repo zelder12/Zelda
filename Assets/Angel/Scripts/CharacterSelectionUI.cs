@@ -12,9 +12,8 @@ public class CharacterSelectionUI1 : MonoBehaviour
 
     void Start()
     {
-        buttonKnight.onClick.AddListener(() => SelectCharacter("Knight"));
-        buttonRogue.onClick.AddListener(() => SelectCharacter("Rogue"));
-        buttonWizard.onClick.AddListener(() => SelectCharacter("Wizard"));
+        RaycastSelector raycastSelector = new RaycastSelector();
+        SelectCharacter(raycastSelector.personajeSave.ToString());
     }
 
     void SelectCharacter(string characterName)

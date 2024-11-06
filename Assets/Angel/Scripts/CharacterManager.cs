@@ -24,6 +24,8 @@ public class CharacterManager : MonoBehaviour
     // Referencia a la cámara (Cinemachine o tu propia cámara de seguimiento)
     public CinemachineVirtualCamera virtualCamera; // Si usas Cinemachine
 
+
+
     void Awake()
     {
         if (Instance == null)
@@ -34,6 +36,15 @@ public class CharacterManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+
+        GameManager persistentData = FindObjectOfType<GameManager>();
+
+        if (gameObject.transform.position != null)
+        {
+            Debug.Log("El personaje es " + persistentData.PlayerRol);
+
+            SwitchCharacter(persistentData.PlayerRol, transform.position);
         }
     }
 
@@ -52,6 +63,11 @@ public class CharacterManager : MonoBehaviour
         //Debug.Log("Personaje cargado: " + selectedCharacter);
 
         //SwitchCharacter(selectedCharacter, this.transform.position);
+
+    }
+
+    private void Update()
+    {    
     }
 
     /// <summary>
@@ -61,10 +77,12 @@ public class CharacterManager : MonoBehaviour
     /// <param name="spawnPosition">Posición en la que el personaje aparecerá.</param>
     public void SwitchCharacter(string characterName, Vector3 spawnPosition)
     {
+
         // Guardar la selección del personaje
         PlayerPrefs.SetString("SelectedCharacter", characterName);
         PlayerPrefs.Save();
 
+        Debug.Log("ANTES DE RECONOCER EL PERSONAJE ");
         // Instanciar el nuevo personaje basado en el nombre
         switch (characterName)
         {
@@ -72,17 +90,19 @@ public class CharacterManager : MonoBehaviour
                 currentPlayerInstance = Instantiate(knightPrefab, spawnPosition, Quaternion.identity);
                 currentPlayerInstance.transform.SetParent(transform, false);
                 currentPlayerInstance.transform.localPosition = Vector3.zero;
+                Debug.Log("Personaje reconocido: " + characterName);
                 break;
             case "Rogue":
                 currentPlayerInstance = Instantiate(roguePrefab, spawnPosition, Quaternion.identity);
                 currentPlayerInstance.transform.SetParent(transform, false);
-                currentPlayerInstance.transform.localPosition = Vector3.zero;
+                currentPlayerInstance.transform.localPosition = Vector3.zero; 
+                Debug.Log("Personaje reconocido: " + characterName);
                 break;
-            case "Wizard":
+            case "Wizzard":
                 currentPlayerInstance = Instantiate(wizardPrefab, spawnPosition, Quaternion.identity);
                 currentPlayerInstance.transform.SetParent(transform, false);
                 currentPlayerInstance.transform.localPosition = Vector3.zero;
-
+                Debug.Log("Personaje reconocido: " + characterName);
                 break;
             default:
                 Debug.LogError("Personaje no reconocido: " + characterName);

@@ -143,5 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e32da5906a1d8b47a360c026a7e7395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 0}
-  weaponItem: {fileID: 11400000, guid: 50093b3169f8d1a479651c9d05171d48, type: 2}
+  hand: {fileID: 0}
+  weaponItem: {fileID: 11400000, guid: bc9fba2459ec1974c8280c8b08b541a3, type: 2}
+  facingRight: 0

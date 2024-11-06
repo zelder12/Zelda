@@ -16,14 +16,19 @@ public class Weapon : MonoBehaviour
     }
     private void Update()
     {
+        GameManager gameManager = new GameManager();
         if (hand != null)
         {
             if (!weaponItem.estadoAtacando) {
 
-                if (Input.GetKeyDown(KeyCode.J))
+                if (Input.GetKeyDown(gameManager.keyMappings["Attack"]))
                 {
                     StartCoroutine(weaponItem.AnimarAtaque(hand, facingRight));
                     Debug.Log("ATAQUE REALIZADO");
+                }
+                else if (Input.GetKeyDown(gameManager.keyMappings["Jump"]))
+                {
+                    Debug.Log("SALTO REALIZADO");
                 }
             }
         }

@@ -253,10 +253,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterScriptable: {fileID: 11400000, guid: 44301c10d9ae48f46ba01dbb2e4135c6,
     type: 2}
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
-  leftHandUsing: {fileID: 0}
-  rightHandUsing: {fileID: 0}
+  leftHand: {fileID: 959746669, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  rightHand: {fileID: -1818126555, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  leftHandUsing: {fileID: -908079265, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
+  rightHandUsing: {fileID: 1650587750, guid: 41a65cedd1b94834e9ac4e4a5bf21b1c, type: 3}
 --- !u!1 &1283136568312178071
 GameObject:
   m_ObjectHideFlags: 0

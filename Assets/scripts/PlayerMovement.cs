@@ -1,7 +1,6 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -257,13 +256,18 @@ public class PlayerMovement : MonoBehaviour
             armaL = instancia1;
         }
 
-        if (rightHand.transform.childCount < 1 && armaR != null )
+        if (rightHand.transform.childCount < 1 && armaR != null)
         {
-            Debug.Log("SE INSTANCIO EL ARMA R");
-            GameObject instancia2 = Instantiate(armaR, hijo2.position, hijo2.rotation);
-            instancia2.GetComponent<Weapon>().SetHand(rightHand);
-            instancia2.transform.SetParent(hijo2);
-            armaR = instancia2;
+            Debug.Log("SE ASIGNO EL ARMA R ORIGINAL");
+            // Hace que el objeto original sea hijo de hijo2
+            armaR.transform.SetParent(hijo2);
+
+            // Ajusta la posición y rotación para alinearlo con hijo2
+            armaR.transform.localPosition = Vector3.zero;
+            armaR.transform.localRotation = Quaternion.identity;
+
+            // Llama a SetHand con rightHand en el script Weapon, si es necesario
+            armaR.GetComponent<Weapon>().SetHand(rightHand);
         }
 
 

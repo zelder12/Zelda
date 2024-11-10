@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class GranArbolDekuInteraction : MonoBehaviour
 {
-    [SerializeField] private UIManager uIManager; 
-    [SerializeField] private string[] textosArbolDeku; 
+    [SerializeField] private UIManager uIManager;
+    [SerializeField] private string[] textosArbolDeku;
+    [SerializeField] private GameObject image; // Referencia a la imagen que deseas activar o desactivar
 
     private bool cercaDelJugador;
-    private int indiceTextoActual = 0; 
+    private int indiceTextoActual = 0;
 
     private void Awake()
     {
@@ -28,14 +29,14 @@ public class GranArbolDekuInteraction : MonoBehaviour
     {
         if (indiceTextoActual < textosArbolDeku.Length)
         {
-            uIManager.ActivaDesactivarCajaTextos(true); 
-            uIManager.MostrarTextos(textosArbolDeku[indiceTextoActual]); 
+            uIManager.ActivaDesactivarCajaTextos(true);
+            uIManager.MostrarTextos(textosArbolDeku[indiceTextoActual]);
             indiceTextoActual++;
         }
         else
         {
-            uIManager.ActivaDesactivarCajaTextos(false); 
-            indiceTextoActual = 0; 
+            uIManager.ActivaDesactivarCajaTextos(false);
+            indiceTextoActual = 0;
         }
     }
 
@@ -44,6 +45,10 @@ public class GranArbolDekuInteraction : MonoBehaviour
         if (otro.CompareTag("Player"))
         {
             cercaDelJugador = true;
+            if (image != null)
+            {
+                image.SetActive(true); // Activa la imagen cuando el jugador entra en el Collider
+            }
         }
     }
 
@@ -52,8 +57,12 @@ public class GranArbolDekuInteraction : MonoBehaviour
         if (otro.CompareTag("Player"))
         {
             cercaDelJugador = false;
-            uIManager.ActivaDesactivarCajaTextos(false); 
-            indiceTextoActual = 0; 
+            if (image != null)
+            {
+                image.SetActive(false); // Desactiva la imagen cuando el jugador sale del Collider
+            }
+            uIManager.ActivaDesactivarCajaTextos(false);
+            indiceTextoActual = 0;
         }
     }
 }

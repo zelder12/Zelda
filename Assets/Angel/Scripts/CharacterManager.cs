@@ -24,7 +24,8 @@ public class CharacterManager : MonoBehaviour
     // Referencia a la cámara (Cinemachine o tu propia cámara de seguimiento)
     public CinemachineVirtualCamera virtualCamera; // Si usas Cinemachine
 
-
+    // Índice del personaje seleccionado
+    public int characterIndex;
 
     void Awake()
     {
@@ -43,7 +44,6 @@ public class CharacterManager : MonoBehaviour
         if (gameObject.transform.position != null)
         {
             Debug.Log("El personaje es " + persistentData.PlayerRol);
-
             SwitchCharacter(persistentData.PlayerRol, transform.position);
         }
     }
@@ -67,7 +67,7 @@ public class CharacterManager : MonoBehaviour
     }
 
     private void Update()
-    {    
+    {
     }
 
     /// <summary>
@@ -90,18 +90,21 @@ public class CharacterManager : MonoBehaviour
                 currentPlayerInstance = Instantiate(knightPrefab, spawnPosition, Quaternion.identity);
                 currentPlayerInstance.transform.SetParent(transform, false);
                 currentPlayerInstance.transform.localPosition = Vector3.zero;
+                characterIndex = 1; // Asigna índice del Knight
                 Debug.Log("Personaje reconocido: " + characterName);
                 break;
             case "Rogue":
                 currentPlayerInstance = Instantiate(roguePrefab, spawnPosition, Quaternion.identity);
                 currentPlayerInstance.transform.SetParent(transform, false);
-                currentPlayerInstance.transform.localPosition = Vector3.zero; 
+                currentPlayerInstance.transform.localPosition = Vector3.zero;
+                characterIndex = 2; // Asigna índice del Rogue
                 Debug.Log("Personaje reconocido: " + characterName);
                 break;
             case "Wizzard":
                 currentPlayerInstance = Instantiate(wizardPrefab, spawnPosition, Quaternion.identity);
                 currentPlayerInstance.transform.SetParent(transform, false);
                 currentPlayerInstance.transform.localPosition = Vector3.zero;
+                characterIndex = 3; // Asigna índice del Wizard
                 Debug.Log("Personaje reconocido: " + characterName);
                 break;
             default:
@@ -116,6 +119,15 @@ public class CharacterManager : MonoBehaviour
         }
 
         // Opcional: Ajustar la posición inicial del personaje, ya lo hicimos con el parámetro spawnPosition
+    }
+
+    /// <summary>
+    /// Obtiene el índice del personaje actualmente seleccionado.
+    /// </summary>
+    /// <returns>Índice del personaje seleccionado.</returns>
+    public int GetCharacterIndex()
+    {
+        return characterIndex;
     }
 
     /// <summary>

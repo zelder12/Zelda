@@ -1,26 +1,25 @@
-// Assets/Scripts/Inventory/Weapon.cs
 using UnityEngine;
 using static Enemigo;
 
 public class Weapon : MonoBehaviour
 {
-
-
     public GameObject hand;
     public Belicas weaponItem;
     private GameObject objetoColisionado;
     public bool facingRight;
+
     public void SetHand(GameObject setHand)
     {
         this.hand = setHand;
     }
+
     private void Update()
     {
         GameManager gameManager = new GameManager();
-        if (hand != null)
+        if (hand != null && weaponItem != null)  // Verificar que weaponItem no sea null
         {
-            if (!weaponItem.estadoAtacando) {
-
+            if (!weaponItem.estadoAtacando)
+            {
                 if (Input.GetKeyDown(gameManager.keyMappings["Attack"]))
                 {
                     StartCoroutine(weaponItem.AnimarAtaque(hand, facingRight));
@@ -33,9 +32,10 @@ public class Weapon : MonoBehaviour
             }
         }
     }
+
+
     private void Start()
     {
-
         if (weaponItem != null)
         {
             GetComponent<SpriteRenderer>().sprite = weaponItem.sprite;
@@ -46,17 +46,18 @@ public class Weapon : MonoBehaviour
     {
         objetoColisionado = collision.gameObject;
         Debug.Log("Colisionaste con: " + objetoColisionado.name);
-        if (objetoColisionado.GetComponent<EnemyMovement>() != null)
-        {
-            objetoColisionado.GetComponent<EnemyMovement>().datos.dañoJugador(weaponItem.dcc, weaponItem.dpc, weaponItem.dmc);
-        }
+        // Eliminamos la parte que hace daño al enemigo
+        // if (objetoColisionado.GetComponent<EnemyMovement>() != null)
+        // {
+        //     objetoColisionado.GetComponent<EnemyMovement>().datos.dañoJugador(weaponItem.dcc, weaponItem.dpc, weaponItem.dmc);
+        // }
     }
+
     public void Usar()
     {
     }
+
     public void Equipar()
     {
     }
-
-
 }

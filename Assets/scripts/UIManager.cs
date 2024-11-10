@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class UIManager : MonoBehaviour
 {
     private int totalMonedas;
     private int precioObjeto;
     private int golpesRecibidos = 0;
+    public int maxGolpes;
+    private PlayerMovement player;
 
     [SerializeField] private TMP_Text textoMonedas;
     [SerializeField] private GameObject cajaTexto;
@@ -32,6 +35,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        
         Moneda.sumaMoneda += SumarMoneda;
 
         botonReiniciar.onClick.AddListener(ReiniciarJuego);
@@ -53,48 +57,75 @@ public class UIManager : MonoBehaviour
         textoMonedas.text = totalMonedas.ToString();
     }
 
-    public void RecibirDaño(int golpes)
+    private bool musicaReproducida = false; // Bandera para controlar si la música ya se ha reproducido
+
+    public void RecibirDaño(int vidaPersonaje, int maxVida)
     {
-        golpesRecibidos = golpes;
-        if(!(golpesRecibidos == 0))
+        if (vidaPersonaje > 0)
         {
             sangreScreen.gameObject.SetActive(true);
 
-            if (golpesRecibidos == 1)
+            // Ajusta la opacidad según el porcentaje de vida restante (mayor opacidad a menor vida)
+            float porcentajeVidaRestante = (float)vidaPersonaje / maxVida;
+            float alpha = Mathf.Clamp01(1 - porcentajeVidaRestante); // Opacidad máxima cuando vida está cerca de 0
+            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, alpha);
+
+            // Definir el umbral de vida crítica
+            int umbralVidaCritica = 20;
+
+            // Activa la música de estado crítico solo cuando la vida esté en o por debajo de 20
+            if (vidaPersonaje <= umbralVidaCritica && !musicaReproducida)
             {
-                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0.25f);
-                DetenerMusicaCorazonBajo();
-            }
-            else if (golpesRecibidos == 2)
-            {
-                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 1f);
                 ReproducirMusicaCorazonBajo();
+                musicaReproducida = true;
+            }
+            else if (vidaPersonaje > umbralVidaCritica && musicaReproducida)
+            {
+                DetenerMusicaCorazonBajo();
+                musicaReproducida = false;
             }
         }
         else
         {
+            // Si la vida es 0, desactiva el panel de sangre y detiene la música
             sangreScreen.gameObject.SetActive(false);
+            DetenerMusicaCorazonBajo();
+            musicaReproducida = false;
         }
-        
     }
 
-    public void QuitarSangre()
-    {
-        if (golpesRecibidos > 0)
-        {
-            golpesRecibidos--;
 
-            if (golpesRecibidos > 0)
+
+
+    public void QuitarSangre(int vidaPersonaje, int maxVida)
+    {
+        if (vidaPersonaje > 0)
+        {
+            // Calcula la opacidad en función de la vida restante
+            float porcentajeVidaRestante = (float)vidaPersonaje / maxVida;
+            float alpha = Mathf.Clamp01(1 - porcentajeVidaRestante); // Aumenta opacidad a menor vida
+            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, alpha);
+
+            // Verificar si la vida sigue en el umbral crítico
+            int umbralVidaCritica = 20;
+            if (vidaPersonaje <= umbralVidaCritica && !musicaReproducida)
             {
-                float alpha = golpesRecibidos == 1 ? 0.25f : 1f;
-                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, alpha);
+                ReproducirMusicaCorazonBajo();
+                musicaReproducida = true;
             }
-            else
+            else if (vidaPersonaje > umbralVidaCritica && musicaReproducida)
             {
-                sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0);
-                sangreScreen.gameObject.SetActive(false);
                 DetenerMusicaCorazonBajo();
+                musicaReproducida = false;
             }
+        }
+        else
+        {
+            // Si la vida es 0, desactiva el panel de sangre y detiene la música
+            sangreScreen.color = new Color(sangreScreen.color.r, sangreScreen.color.g, sangreScreen.color.b, 0);
+            sangreScreen.gameObject.SetActive(false);
+            DetenerMusicaCorazonBajo();
+            musicaReproducida = false;
         }
     }
 
@@ -118,8 +149,46 @@ public class UIManager : MonoBehaviour
 
     public void ReiniciarJuego()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Detener la música de Game Over antes de reiniciar
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop(); // Detiene cualquier música que esté sonando
+        }
+
+        // Desactivar el panel de Game Over y el panel de sangre
+        panelGameOver.SetActive(false);
+        sangreScreen.gameObject.SetActive(false); // Desactiva sangreScreen
+
+        // Cargar la escena de Zelda1 en vez de la actual
+        SceneManager.LoadScene("Zelda 1");
+
+        StartCoroutine(ActualizarReferenciasTrasReinicio()); // Asegura las referencias tras el cambio de escena
     }
+
+    private IEnumerator ActualizarReferenciasTrasReinicio()
+    {
+        yield return null; // Espera un frame para asegurar que la escena se haya cargado completamente
+
+        // Buscar el PlayerMovement automáticamente
+        player = FindObjectOfType<PlayerMovement>();
+        if (player == null)
+        {
+            Debug.LogError("No se encontró PlayerMovement después del cambio de escena.");
+        }
+
+        // Configurar la cámara para seguir al PlayerMovement
+        var camara = FindObjectOfType<CinemachineVirtualCamera>();
+        if (camara != null && player != null)
+        {
+            camara.Follow = player.transform;
+        }
+        else
+        {
+            Debug.LogError("Cámara o PlayerMovement no encontrados para seguir después del cambio de escena.");
+        }
+    }
+
+
 
     public void IrAlMenuInicial()
     {

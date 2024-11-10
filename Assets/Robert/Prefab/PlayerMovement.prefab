@@ -401,12 +401,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8868830100832812177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54ef496c33f00d943be389a1cc61a66b, type: 3}
+  m_Script: {fileID: 11500000, guid: 059ba4ca1f3846f44ba853dd35dc83ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movimiento: 5
+  carrera: 10
+  armaL: {fileID: 0}
+  armaR: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  Player: {fileID: 0}
+  spriteController: {fileID: 0}
   velocidadNormal: 7
-  "velocidadR\xE1pida": 12
-  ColEspada: {fileID: 8049442567356135812}
+  "velocidadR\xE1pida": 10
+  ColEspada: {fileID: 0}
   sonidoHerida1: {fileID: 0}
   sonidoHerida2: {fileID: 0}
   uIManager: {fileID: 0}
@@ -415,3 +423,4 @@ MonoBehaviour:
   golpesRecibidos: 0
   burbujaOffset: {x: 0, y: 0, z: 0}
   invulnerable: 0
+  isFrozen: 0

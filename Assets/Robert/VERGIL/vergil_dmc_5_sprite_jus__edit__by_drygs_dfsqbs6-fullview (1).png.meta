@@ -1,0 +1,369 @@
+fileFormatVersion: 2
+guid: 910bc59aef68f5042ba09285d37a21aa
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12
+        width: 36
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c08ab7003c9af01499688be9fa2c55a1
+      internalID: -1276528659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_1
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 12
+        width: 37
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1c0acd56b427a5449c285d34abd855a
+      internalID: -1710861660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_2
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 12
+        width: 37
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ee8768ac4df4404db7be0d9df530929
+      internalID: -1093426598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_3
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 8
+        width: 54
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b22af3c912b63404a9a444512d1bf1a6
+      internalID: -1332985234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_4
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 9
+        width: 54
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 596b1688acfd8a9449bfa0af6c2feb73
+      internalID: 1859257801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_5
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 10
+        width: 52
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08e65c2e9be421047aeed650d591a209
+      internalID: -557518457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_6
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 12
+        width: 40
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f3d3d680a7f8914d9cda5bd40d0734d
+      internalID: 1375050510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_7
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 12
+        width: 41
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5eeaf5db0415bc14e945c64cfea54446
+      internalID: 78454840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_8
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 12
+        width: 40
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3cfe7252a8886e428e8b8d8217209b1
+      internalID: 773189057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_9
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 12
+        width: 41
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9a4237d92b88e64a93aeda302d942cc
+      internalID: -1732116958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_10
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 12
+        width: 39
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0284b409ea036644a9fa4e10d9457de9
+      internalID: 1923453345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_0: -1276528659
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_1: -1710861660
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_10: 1923453345
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_2: -1093426598
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_3: -1332985234
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_4: 1859257801
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_5: -557518457
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_6: 1375050510
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_7: 78454840
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_8: 773189057
+      vergil_dmc_5_sprite_jus__edit__by_drygs_dfsqbs6-fullview (1)_9: -1732116958
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

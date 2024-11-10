@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &4145584434283741662
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 293086430553825638, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 672c9648779b13246b16275ad9e2fa8b, type: 3}
+    - target: {fileID: 3921482949927427390, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_Name
+      value: RE DEAD (16) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389660980003995640, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: vida
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389660980003995640, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: armadura
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389660980003995640, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: vidaMaxima
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6389660980003995640, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: gritoReDead
+      value: 
+      objectReference: {fileID: 8300000, guid: 672c9648779b13246b16275ad9e2fa8b, type: 3}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.05821083
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8290154614678628005, guid: 609241c66bfba5d4b89096fd39230fcc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 609241c66bfba5d4b89096fd39230fcc, type: 3}

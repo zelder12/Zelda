@@ -53,7 +53,7 @@ public class Inventario : MonoBehaviour
                 }
             }
         }
-        
+
         if (item.GetComponent<Weapon>() != null)
         {
             gameObject.GetComponent<PlayerMovement>().armaR = item.gameObject;
@@ -81,7 +81,7 @@ public class Inventario : MonoBehaviour
         if (index >= 0 && index < Bag.Count)
         {
             Objetos objeto = Bag[index].GetComponent<Objetos>();
- 
+
             if (objeto != null)
             {
                 objeto.UsarObjeto(this, index);
@@ -339,7 +339,7 @@ public class Inventario : MonoBehaviour
         if (Activar_inv)
         {
             inv[0].SetActive(true);
-           
+
         }
         else
         {

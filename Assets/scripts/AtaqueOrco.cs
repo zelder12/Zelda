@@ -13,7 +13,7 @@ public class AtaqueOrco : MonoBehaviour
             PlayerMovement personaje = collision.gameObject.GetComponent<PlayerMovement>();
             if (personaje != null)
             {
-                personaje.CausarHerida(daño); // Pasamos el daño como parámetro
+                personaje.CausarHerida(daño);
             }
         }
     }

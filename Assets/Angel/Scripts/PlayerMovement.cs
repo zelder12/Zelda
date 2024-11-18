@@ -1,10 +1,10 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,12 +12,24 @@ public class PlayerMovement : MonoBehaviour
     public int maxVida = 100; // Define el máximo de vida
 
     //ANGEL
+    public GameManager gameManager;
     public float movimiento = 5f;
-    public float carrera = 10f;
+
+    public float estaminaAct;
+    public float restaurarEstamina = 0.5f;
+    public float escenciaAct;
+    public float restaurarEscencia = 0.5f;
+    public float energiaAct;
+    public float restaurarEnergia = 0.5f;
+    public float manaActual;
+    public float restaurarMana = 0.5f;
+    public int vidaActual;
+    public int restaurarVida = 2;
+
     private Vector2 moveDirection;
     private Rigidbody2D rb;
-    private bool facingRight = true;
-    private bool estadoAtacando = false;
+    public bool facingRight = true;
+    public bool estadoAtacando = false;
 
     private Vector3 leftHandUpPosition = new Vector3(-0.6140003f, -0.3506131f, 0);
     private Vector3 leftHandDownPosition = new Vector3(-0.6140003f, -0.4006124f, 0);
@@ -49,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer spritePersonaje;
     private AudioSource audioSource;
     private Collider2D playerCollider;
-    public int vidaPersonaje = 3;
     public int golpesRecibidos = 0;
     public Vector3 burbujaOffset;
 
@@ -68,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         rig = GetComponent<Rigidbody2D>();
         spritePersonaje = GetComponentInChildren<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
@@ -145,7 +157,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        vidaPersonaje = maxGolpes;
+        InvokeRepeating("ResturarRecursos", 0f, 1f);
+        vidaActual = maxGolpes;
         if (uIManager == null)
         {
             Debug.LogWarning("UIManager no está asignado en el inspector.");
@@ -160,12 +173,12 @@ public class PlayerMovement : MonoBehaviour
 
         // Crear el vector de movimiento
         Vector3 moveDirection = new Vector3(moveX, moveY, 0);
-
+        transform.position += moveDirection * movimiento * Time.deltaTime;
+        Debug.Log("El move Dirección es:" + moveDirection + " y el movimiento es:" + movimiento);
         // Aplicar el movimiento al transform del objeto
-        if (!estadoAtacando && !isFrozen) // Verificar si el jugador está congelado
+        if (!estadoAtacando)
         {
-            transform.position += moveDirection * movimiento * Time.deltaTime;
-            Debug.Log("El move Direccion es:" + moveDirection + " y el movimiento es:" + movimiento);
+
             if (moveX > 0 && !facingRight)
             {
                 FlipSprites();  // Voltea a la derecha
@@ -175,32 +188,78 @@ public class PlayerMovement : MonoBehaviour
                 FlipSprites();  // Voltea a la izquierda
             }
         }
+        float aumento = (gameManager.GetStat("Carrera") * (estaminaAct / gameManager.GetStat("Estamina")));
 
-        // Aquí verificamos si Shift está presionado para aumentar la velocidad solo temporalmente
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        // Aumentar la velocidad al presionar Shift
+        if (Input.GetKeyDown(KeyCode.LeftShift) && estaminaAct > 0)
         {
-            velocidadIncrementada = true;
+            movimiento += aumento; // Aumenta el valor de movimiento
+            InvokeRepeating("ReduceStamina", 1f, 1f);
+            restaurarEstamina = restaurarEstamina - (restaurarEstamina * 2);
         }
+
+        // Detener la reducción de estamina al soltar Shift
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            velocidadIncrementada = false;
+            movimiento = gameManager.GetStat("Carrera"); // Restablece el valor original de movimiento
+            CancelInvoke("ReduceStamina");
+            restaurarEstamina = restaurarEstamina - (restaurarEstamina * 2);
         }
 
-        // Si Shift está presionado, aumentar la velocidad de movimiento
-        if (velocidadIncrementada)
-        {
-            movimiento = velocidadNormal + carrera; // Incrementa velocidad base con carrera
-        }
-        else
-        {
-            movimiento = velocidadNormal; // Restablece a la velocidad normal cuando Shift se suelta
-        }
 
         Estado_Walk();
         Estado_Run();
         Estado_Idle();
     }
 
+    // Método para reducir estamina cada segundo
+    private void ReduceStamina()
+    {
+        // Calculamos la reducción del 20% de la estamina actual
+        float reduccion = estaminaAct * 0.20f;
+
+        // Restamos la reducción calculada a la estamina actual
+        estaminaAct -= reduccion;
+
+        // Redondeamos el valor para evitar decimales (si es necesario)
+        estaminaAct = Mathf.RoundToInt(estaminaAct);
+        Debug.Log("Estamina restante: " + estaminaAct);
+    }
+    private void ResturarRecursos()
+    {
+        if (estaminaAct < gameManager.GetStat("Estamina") && restaurarEstamina != -5)
+        {
+            estaminaAct += restaurarEstamina;
+            if (estaminaAct > gameManager.GetStat("Estamina"))
+            {
+                estaminaAct = gameManager.GetStat("Estamina");
+            }
+        }
+        if (escenciaAct < gameManager.GetStat("Esencia"))
+        {
+            escenciaAct += restaurarEscencia;
+            if (escenciaAct > gameManager.GetStat("Esencia"))
+            {
+                escenciaAct = gameManager.GetStat("Esencia");
+            }
+        }
+        if (vidaActual < gameManager.GetStat("Salud"))
+        {
+            vidaActual += restaurarVida;
+            if (vidaActual > gameManager.GetStat("Salud"))
+            {
+                vidaActual = Convert.ToInt32(gameManager.GetStat("Salud"));
+            }
+
+        }
+        else
+        {
+            if (vidaActual > gameManager.GetStat("Salud"))
+            {
+                vidaActual = Convert.ToInt32(gameManager.GetStat("Salud"));
+            }
+        }
+    }
 
     void FlipSprites()
     {
@@ -226,18 +285,29 @@ public class PlayerMovement : MonoBehaviour
 
         if (rightHand.transform.childCount < 1 && armaR != null)
         {
-            Debug.Log("SE INSTANCIO EL ARMA R");
-            GameObject instancia2 = Instantiate(armaR, hijo2.position, hijo2.rotation);
-            instancia2.GetComponent<Weapon>().SetHand(rightHand);
-            instancia2.transform.SetParent(hijo2);
-            armaR = instancia2;
+            Debug.Log("SE ASIGNO EL ARMA R ORIGINAL");
+            // Hace que el objeto original sea hijo de hijo2
+            armaR.transform.SetParent(hijo2);
+
+            // Ajusta la posiciÃ³n y rotaciÃ³n para alinearlo con hijo2
+            armaR.transform.localPosition = Vector3.zero;
+            armaR.transform.localRotation = Quaternion.identity;
+
+            // Llama a SetHand con rightHand en el script Weapon, si es necesario
+            armaR.GetComponent<Weapon>().SetHand(rightHand);
+            gameManager.SetBonus("fuerza", 1, armaR.GetComponent<Weapon>().dcc);
+            armaR.GetComponent<Weapon>().playerMovement = transform.GetComponent<PlayerMovement>();
         }
+
+
+
     }
 
     public void Estado_Idle()
     {
         Inventario inventario = GetComponent<Inventario>();
         List<GameObject> Equipo = inventario.EquipoObjetos;
+
 
         float speed = 3.5f; // Velocidad de la animación
         // Animación para la mano izquierda
@@ -247,35 +317,17 @@ public class PlayerMovement : MonoBehaviour
 
         if (rightHand.transform.childCount > 0)
         {
-            var weapon = rightHand.transform.GetChild(0).GetComponent<Weapon>();
-            if (weapon != null && weapon.weaponItem != null)  // Verificar que Weapon y weaponItem no sean null
-            {
-                weapon.facingRight = facingRight;
-                estadoAtacando = weapon.weaponItem.estadoAtacando;
-                Debug.Log("EL ARMA R SE CAMBIO DE DIRECCION " + facingRight);
-            }
-            else
-            {
-                Debug.LogError("No se encontró un Weapon o weaponItem en la mano derecha");
-            }
+            rightHand.transform.GetChild(0).GetComponent<Weapon>().facingRight = facingRight;
+            estadoAtacando = rightHand.transform.GetChild(0).GetComponent<Weapon>().estadoAtacando;
+            Debug.Log("EL ARMA R SE CAMBIO DE DIRECCION" + facingRight);
         }
-
         if (leftHand.transform.childCount > 0)
         {
-            var weapon = leftHand.transform.GetChild(0).GetComponent<Weapon>();
-            if (weapon != null && weapon.weaponItem != null)  // Verificar que Weapon y weaponItem no sean null
-            {
-                weapon.facingRight = facingRight;
-                estadoAtacando = weapon.weaponItem.estadoAtacando;
-                Debug.Log("EL ARMA L SE CAMBIO DE DIRECCION " + facingRight);
-            }
-            else
-            {
-                Debug.LogError("No se encontró un Weapon o weaponItem en la mano izquierda");
-            }
+            leftHand.transform.GetChild(0).GetComponent<Weapon>().facingRight = facingRight;
+            estadoAtacando = leftHand.transform.GetChild(0).GetComponent<Weapon>().estadoAtacando;
+            Debug.Log("EL ARMA L SE CAMBIO DE DIRECCION" + facingRight);
         }
-
-        if (leftHand.transform.childCount > 1)
+        if (leftHand.transform.childCount == 1)
         {
             leftHand.GetComponent<SpriteRenderer>().sprite = spriteController.leftHandUsing;
         }
@@ -284,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
             leftHand.GetComponent<SpriteRenderer>().sprite = spriteController.leftHand;
         }
 
-        if (rightHand.transform.childCount > 1)
+        if (rightHand.transform.childCount == 1)
         {
             rightHand.GetComponent<SpriteRenderer>().sprite = spriteController.rightHandUsing;
         }
@@ -367,17 +419,17 @@ public class PlayerMovement : MonoBehaviour
     }
     public void CausarHerida(float daño)
     {
-        if (vidaPersonaje > 0 && !invulnerable && !burbujaActiva)
+        if (vidaActual > 0 && !invulnerable && !burbujaActiva)
         {
-            vidaPersonaje -= (int)daño; // Convertir a int si vidaPersonaje es un entero
+            vidaActual -= (int)daño; // Convertir a int si vidaPersonaje es un entero
             golpesRecibidos++;
 
             // Llamada a RecibirDaño utilizando vida actual y vida máxima
-            uIManager.RecibirDaño(vidaPersonaje, maxVida);
+            uIManager.RecibirDaño(vidaActual, maxVida);
 
             if (audioSource != null && (sonidoHerida1 != null || sonidoHerida2 != null))
             {
-                AudioClip sonidoSeleccionado = Random.value > 0.5f ? sonidoHerida1 : sonidoHerida2;
+                AudioClip sonidoSeleccionado = UnityEngine.Random.value > 0.5f ? sonidoHerida1 : sonidoHerida2;
                 audioSource.PlayOneShot(sonidoSeleccionado);
             }
             else
@@ -385,19 +437,25 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogWarning("AudioSource o clips de sonido no están configurados correctamente.");
             }
 
-            if (vidaPersonaje <= 0)
+            if (vidaActual <= 0)
             {
-                animator.SetBool("Death", true);
+                animator.SetBool("IsDeath", true);
                 estaMuerto = true;
                 ConvertirASolido();
                 Invoke(nameof(Morir), 1f);
+                uIManager.IniciarGameOver();
+                Application.Quit();
+
+                #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+                #endif
             }
             else
             {
                 StartCoroutine(ActivarInvulnerabilidad());
 
                 // Llamada corregida a QuitarSangre con los parámetros requeridos
-                uIManager.QuitarSangre(vidaPersonaje, maxVida);
+                uIManager.QuitarSangre(vidaActual, maxVida);
             }
         }
     }
@@ -510,20 +568,20 @@ public class PlayerMovement : MonoBehaviour
 
         if (curacionCompleta)
         {
-            vidaPersonaje = maxVida; // Restaura la vida completa
-            uIManager.QuitarSangre(vidaPersonaje, maxVida); // Actualiza la sangre basada en la vida
+            vidaActual = maxVida; // Restaura la vida completa
+            uIManager.QuitarSangre(vidaActual, maxVida); // Actualiza la sangre basada en la vida
         }
         else
         {
-            vidaPersonaje += cantidad;
-            vidaPersonaje = Mathf.Min(vidaPersonaje, maxVida); // Asegura que la vida no exceda maxVida
+            vidaActual += cantidad;
+            vidaActual = Mathf.Min(vidaActual, maxVida); // Asegura que la vida no exceda maxVida
 
             // Llama a QuitarSangre para actualizar la pantalla de sangre en función de la vida
-            uIManager.QuitarSangre(vidaPersonaje, maxVida);
+            uIManager.QuitarSangre(vidaActual, maxVida);
         }
 
         // Si la vida es suficiente, detener la música de estado crítico
-        if (vidaPersonaje > 20)
+        if (vidaActual > 20)
         {
             uIManager.DetenerMusicaCorazonBajo();
         }
@@ -533,14 +591,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (estaMuerto) return;
 
-        vidaPersonaje += cantidad;
-        vidaPersonaje = Mathf.Min(vidaPersonaje, maxVida); // Asegura que la vida no exceda maxVida
+        vidaActual += cantidad;
+        vidaActual = Mathf.Min(vidaActual, maxVida); // Asegura que la vida no exceda maxVida
 
         // Llama a QuitarSangre para actualizar la pantalla de sangre en función de la vida
-        uIManager.QuitarSangre(vidaPersonaje, maxVida);
+        uIManager.QuitarSangre(vidaActual, maxVida);
 
         // Detener la música si la vida está por encima del umbral crítico
-        if (vidaPersonaje > 20)
+        if (vidaActual > 20)
         {
             uIManager.DetenerMusicaCorazonBajo();
         }

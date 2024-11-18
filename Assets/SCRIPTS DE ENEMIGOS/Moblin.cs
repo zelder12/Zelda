@@ -74,6 +74,7 @@ public class EnemyMovement : MonoBehaviour
             StopAllCoroutines();
             PlayerMovement.GetComponent<PlayerMovement>().isFrozen = false;
             Destroy(gameObject);
+            PlayerMovement.GetComponent<PlayerMovement>().gameManager.SetBaseStat("Maestria", 0.5f);
             return;
         }
 
@@ -91,9 +92,9 @@ public class EnemyMovement : MonoBehaviour
 
         RotarEnemigo();
 
-        if (Input.GetKeyDown(KeyCode.J)) AplicarDañoNormal(10f);
-        else if (Input.GetKeyDown(KeyCode.I)) AplicarDañoPenetrante(8f);
-        else if (Input.GetKeyDown(KeyCode.K)) AplicarDañoMagico(5f);
+        //if (Input.GetKeyDown(KeyCode.J)) AplicarDañoNormal(10f);
+        //else if (Input.GetKeyDown(KeyCode.I)) AplicarDañoPenetrante(8f);
+        //else if (Input.GetKeyDown(KeyCode.K)) AplicarDañoMagico(5f);
     }
 
     private void ComportamientoReDead()

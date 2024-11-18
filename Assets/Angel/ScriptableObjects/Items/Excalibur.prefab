@@ -144,5 +144,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hand: {fileID: 0}
-  weaponItem: {fileID: 11400000, guid: bc9fba2459ec1974c8280c8b08b541a3, type: 2}
+  weapon: {fileID: 3233746118590929172}
+  dcc: 5
+  dpc: 5
+  dmc: 5
+  complejidad: 0
+  limiteEfectos: 0
+  limiteEncantamientos: 0
+  ejecucion: 0.8
+  cEstamina: 3
+  cEsencia: 0
+  cEnergia: 0
+  cMana: 0
+  alcance: 0
+  playerMovement: {fileID: 0}
   facingRight: 0
+  estadoAtacando: 0
+  estadoUsando: 0
+  masas: 0
+  cadencia: 0

@@ -50,6 +50,7 @@ public class RaycastSelector : MonoBehaviour
             {
                 // Accede al `SavePanel` y sus componentes
                 GameObject selectedSavePanel = result.gameObject;
+                SaveManager saveManager = new SaveManager();
 
                 // Acceder a la imagen y al texto dentro del `SavePanel`
                 UnityEngine.UI.Image saveImage = selectedSavePanel.transform.Find("Image").gameObject.GetComponent<UnityEngine.UI.Image>();
@@ -59,9 +60,8 @@ public class RaycastSelector : MonoBehaviour
                 Debug.Log("Panel de partida guardada seleccionada: " + selectedSavePanel.name);
                 Debug.Log("Texto de la partida: " + saveText.text);
                 Debug.Log("Nombre del sprite de la imagen: " + saveImage.sprite.name);
-                persistentData.PlayerRol = saveImage.sprite.name;
+                persistentData.saveRun = saveManager.BuscarSave(persistentData.playerUser, selectedSavePanel.name);
                 LoadSceneAsync("Zelda 1");
-                // Aquí puedes agregar lógica adicional para cargar la partida o mostrar detalles
 
                 break; // Detiene el bucle al encontrar el primer `SavePanel` seleccionado
             }

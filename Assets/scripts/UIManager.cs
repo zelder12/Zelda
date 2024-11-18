@@ -145,6 +145,7 @@ public class UIManager : MonoBehaviour
             audioSource.Play();
         }
         panelGameOver.SetActive(true);
+        Debug.LogWarning("SE INICIO EL GAME OVER");
     }
 
     public void ReiniciarJuego()

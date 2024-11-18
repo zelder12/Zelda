@@ -19,6 +19,7 @@ public class UserData
 }
 public class GameSave
 {
+    // Información general
     public string userName;
     public string gameName;
     public string playerName;
@@ -26,8 +27,50 @@ public class GameSave
     public string fechaCreado;
     public string fechaUltimo;
 
-    public float[] playerPosition;
+    public bool mision1;
+    public bool mision2;
+    public bool mision3;
+    public bool mision4;
+    public bool mision5;
+    public bool jefeFinal;
+
+    // RESILIENCIA
+    public float salud;      // Cantidad de daño que puede recibir
+    public float estamina;   // Recurso para moverse
+    public float saciedad;   // Resistencia al agotamiento
+    public float carrera;    // Velocidad al correr
+
+    // BELICISMO
+    public float fuerza;     // Daño con armas
+    public float esencia;    // Recurso para lanzar ataques
+    public float armadura;   // Resistencia a daño
+    public float impetu;     // Velocidad de ataque
+
+    // BALÍSTICA
+    public float perforacion; // Daño con arcos
+    public float energia;     // Recurso para lanzar flechas
+    public float coraza;      // Resistencia a flechas
+    public float ritmo;       // Velocidad para lanzar flechas
+
+    // ARCANA
+    public float poder;      // Daño con hechizos
+    public float mana;       // Recurso para lanzar hechizos
+    public float cordura;    // Resistencia a hechizos
+    public float claridad;   // Velocidad para lanzar hechizos
+
+    // OTROS
+    public float carisma;    // Reduce costos
+    public float inteligencia; // Capacidad de aprender
+    public float suerte;     // Mejor botín
+    public float valor;      // Reduce el miedo
+
+    // NIVELES
+    public float maestria;             // Nivel general del personaje
+    public float maestriaBelica;       // Nivel con armas cuerpo a cuerpo
+    public float maestriaBalistica;    // Nivel con armas a distancia
+    public float maestriaArcana;       // Nivel con magia
 }
+
 public class SaveManager : MonoBehaviour
 {
     private string userFolder;
@@ -113,7 +156,8 @@ public class SaveManager : MonoBehaviour
                 return "DATOS CORRUCTOS";
             }
         }
-        else {
+        else
+        {
             return "DATOS CORRUCTOS";
         }
     }
@@ -131,21 +175,100 @@ public class SaveManager : MonoBehaviour
         Directory.CreateDirectory(saveFolder);
         Debug.Log("Carpeta de partida creada en: " + saveFolder);
 
-        GameSave gameSave = new GameSave
+        if (rol == "Knight")
         {
-            userName = usuario,
-            playerName = nombre,
-            gameName = nombre,
-            rol = rol,
-            fechaCreado = DateTime.Now.ToString()
-        };
+            GameSave gameSave = new GameSave
+            {
+                userName = usuario,
+                playerName = nombre,
+                gameName = nombre,
+                rol = rol,
+                fechaCreado = DateTime.Now.ToString(),
 
-        string json = JsonUtility.ToJson(gameSave);
+                salud = 25,
+                estamina = 10,
+                saciedad = 10,
+                carrera = 5,
 
-        string filePath = Path.Combine(saveFolder, "UserData.json");
-        File.WriteAllText(filePath, json);
+                fuerza = 8,
+                esencia = 16,
+                armadura = 12,
+                impetu = 0.5f,
 
-        return $"PARTIDA CREADA CON EXITO";
+            };
+
+            string json = JsonUtility.ToJson(gameSave);
+
+            string filePath = Path.Combine(saveFolder, "UserData.json");
+            File.WriteAllText(filePath, json);
+
+            return $"PARTIDA CREADA CON EXITO";
+        }
+        else if (rol == "Rogue")
+        {
+            GameSave gameSave = new GameSave
+            {
+                userName = usuario,
+                playerName = nombre,
+                gameName = nombre,
+                rol = rol,
+                fechaCreado = DateTime.Now.ToString(),
+
+                salud = 5,
+                estamina = 20, //carrea por el 200%
+                saciedad = 10, //todos los recursos entre 4
+                carrera = 10,
+
+                fuerza = 1.6f, // salud entre 3
+                esencia = 16,
+                armadura = 12, //salud entre 2
+                impetu = 0.5f, //fuerza entre esencia
+
+            };
+
+            string json = JsonUtility.ToJson(gameSave);
+
+            string filePath = Path.Combine(saveFolder, "UserData.json");
+            File.WriteAllText(filePath, json);
+
+            return $"PARTIDA CREADA CON EXITO";
+        }
+        else if (rol == "Wizzard")
+        {
+            GameSave gameSave = new GameSave
+            {
+                userName = usuario,
+                playerName = nombre,
+                gameName = nombre,
+                rol = rol,
+                fechaCreado = DateTime.Now.ToString(),
+
+                salud = 25,
+                estamina = 10, //carrea por el 100%
+                saciedad = 10, //todos los recursos entre 4
+                carrera = 5,
+
+                fuerza = 8, // salud entre 3
+                esencia = 16,
+                armadura = 12, //salud entre 2
+                impetu = 0.5f, //fuerza entre esencia
+
+            };
+
+            string json = JsonUtility.ToJson(gameSave);
+
+            string filePath = Path.Combine(saveFolder, "UserData.json");
+            File.WriteAllText(filePath, json);
+
+            return $"PARTIDA CREADA CON EXITO";
+        }
+        else
+        {
+            Debug.LogError("Personaje no reconocido: " + rol);
+            return $"NO SE PUEDO CREAR";
+
+        }
+
     }
 
     public void BorrarPartida(string usuario, string nombre)
@@ -214,5 +337,17 @@ public class SaveManager : MonoBehaviour
         }
 
         return listaDeSaves;
+    }
+
+    public string BuscarSave(string usuario, string nombre)
+    {
+        userFolder = Path.Combine(Application.persistentDataPath, usuario);
+        string saveFolder = Path.Combine(userFolder, "Saves", nombre);
+
+        if (Directory.Exists(saveFolder))
+        {
+            return saveFolder;
+        }
+        return null;
     }
 }
